@@ -92,6 +92,8 @@ body {
 
   display: grid;
   grid-template-rows: min-content 1fr;
+
+  overflow-x: hidden;
 }
 
 /* make images easier to work with */
@@ -155,6 +157,7 @@ select {
   display: grid;
   text-align: center;
   place-items: center;
+  padding-inline: 1rem;
 }
 
 .grid-container * {
@@ -165,7 +168,7 @@ select {
   .grid-container {
     text-align: left;
     column-gap: var(--container-gap, 2rem);
-    grid-template-columns: minmax(2rem, 1fr) repeat(2, minmax(0, 30rem)) minmax(2rem, 1fr);
+    grid-template-columns: minmax(1rem, 1fr) repeat(2, minmax(0, 30rem)) minmax(1rem, 1fr);
   }
   .grid-container > *:first-child {
     grid-column: 2;
@@ -173,6 +176,11 @@ select {
 
   .grid-container > *:last-child {
     grid-column: 3;
+  }
+
+  .grid-container--home {
+    padding-bottom: max(6rem, 20vh);
+    align-items: end;
   }
 }
 
@@ -276,11 +284,55 @@ select {
 }
 
 .primary-navigation {
-  --gap: 8rem;
   --underline-gap: 2rem;
   list-style: none;
   padding: 0;
   margin: 0;
+  background: hsl( var(--clr-dark) / 0.95);
+  /* backdrop-filter: blur(1.5rem); */
+}
+
+@supports (backdrop-filter: blur(1rem)) {
+  .primary-navigation {
+    background: hsl( var(--clr-white) / 0..05);
+    backdrop-filter: blur(1.5rem);
+  }
+}
+
+.mobile-nav-toggle {
+  display: none;
+}
+
+@media (max-width: 35rem) {
+  .primary-navigation {
+    --underline-gap: .5rem;
+    position: fixed;
+    z-index: 1000;
+    inset: 0 0 0 30%;
+    list-style: none;
+    padding: min(20rem, 15vh) 2rem;
+    margin: 0;
+    flex-direction: column;
+    transform: translateX(100%);
+  }
+
+  .primary-navigation.underline-indicators > .active {
+      border: 0;
+  }
+
+  .mobile-nav-toggle {
+    display: block;
+    position: absolute;
+    z-index: 2000;
+    right: 1rem;
+    top: 2rem;
+    background: transparent;
+    background-image: url(./assets/shared/icon-hamburger.svg);
+    background-repeat: no-repeat;
+    width: 1.5rem;
+    aspect-ratio: 1;
+    border: 0;
+  }
 }
 
 .primary-navigation a {
@@ -329,4 +381,29 @@ select {
 
 .dot-indicators > [aria-selected="true"] {
   background-color: hsl( var(--clr-white) / 1); 
+}
+
+/* ----------------------------- */
+/* Page specific background      */
+/* ----------------------------- */
+body {
+  background-size: cover;
+  background-position: bottom center;
+}
+/* home */
+.home {
+  background-image: url(./assets/home/background-home-mobile.jpg);
+}
+
+@media (min-width: 35rem) {
+  .home {
+    background-position: center center;
+    background-image: url(./assets/home/background-home-tablet.jpg);
+  }
+}
+
+@media (min-width: 45rem) {
+  .home {
+    background-image: url(./assets/home/background-home-desktop.jpg);
+  }
 }
